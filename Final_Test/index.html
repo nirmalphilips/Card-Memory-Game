@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play Memory Game</title>
+    <link rel="stylesheet" href="memory.css">
+</head>
+<body>
+    <div id="game-container">
+        <h1>Cards Memory Game</h1>
+        <nav>
+            <a href="index.html" id="new_game">New Game</a>
+            <span id="player-info">Player: <span id="player-name">Name</span></span>
+            <span id="current-score">Current score: <span id="current-score-value">0</span></span>
+            <span id="high-score">High score: <span id="high-score-value">0</span></span>
+        </nav>
+        <div id="tabs">
+            <button class="tab-button" data-tab="play">Play Game</button>
+            <button class="tab-button" data-tab="rules">View Rules</button>
+            <button class="tab-button" data-tab="settings">Game Settings</button>
+            <button class="tab-button" data-tab="scoreboard">Score Board</button>
+        </div>
+        <div id="tab-content">
+            <div id="play-tab" class="tab active">
+                <div id="cards-container">
+                    <div id="cards"></div>
+                </div>
+            </div>
+            <div id="rules-tab" class="tab">
+                <h2>How to Play</h2>
+                <p>
+                    - The cards are placed face down. Each card has a matching pair.<br>
+                    - For each turn, the player selects two cards.<br>
+                    - If the cards match, they are removed from the board.<br>
+                    - If the cards don't match, they are turned face down again.<br>
+                    - At the end of the game, the player receives a score based on the number of correct matches.<br>
+                    - For each correct match you will get 10 Points & For each wrong match 2 Points will be deducted.
+                </p>
+            </div>
+            <div id="settings-tab" class="tab">
+                <h2>Settings</h2>
+                <form id="settings-form">
+                    <label for="player-input">Player name:</label>
+                    <input type="text" id="player-input" placeholder="Enter your name" required>
+                    <br>
+                    <label for="num-cards">Number of cards:</label>
+                    <select id="num-cards">
+                        <option value="8">8 cards</option>
+                        <option value="16">16 cards</option>
+                        <option value="24">24 cards</option>
+                        <option value="32">32 cards</option>
+                        <option value="48">48 cards</option>
+                    </select>
+                    <br>
+                    <button type="submit">Save Settings</button>
+                </form>
+            </div>
+            <div id="scoreboard-tab" class="tab">
+                <table id="scoreboard-table">
+                    <caption>ScoreBoard</caption>
+                    <thead>
+                        <tr>
+                            <th>Player Name</th>
+                            <th>Score</th>
+                            <th>Date</th>
+                            <th>Difficulty Level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be dynamically added here -->
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>

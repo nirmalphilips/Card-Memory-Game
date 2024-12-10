@@ -1,0 +1,230 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    text-align: center;
+}
+
+#game-container {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 2em;
+    font-family: 'Times New Roman', Times, serif;
+    font-style: bold;
+    color: #333;
+}
+
+/* Layout for the nav section */
+nav {
+    display: flex;               /* Arrange items in a row */
+    justify-content: space-between; /* Distribute space evenly */
+    align-items: center;         /* Align items vertically in the center */
+    background-color: white;   /* Add a distinct background color */
+    padding: 10px 20px;          /* Add padding for spacing */
+    border-radius: 8px;          /* Round the edges of the nav bar */
+    color: white;                /* Make text white */
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+/* Style the "New Game" button */
+nav a#new_game {
+    padding: 10px 20px;          /* Add padding for a larger click area */
+    background-color: black;  /* Distinct button color */
+    color: white;                /* Button text color */
+    border: none;
+    border-radius: 5px;          /* Slightly rounded corners */
+    text-decoration: none;       /* Remove underline */
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;             /* Show pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.2s; /* Smooth transitions */
+}
+
+nav a#new_game:hover {
+    background-color: #0056b3;   /* Darker blue on hover */
+    transform: scale(1.05);      /* Slight enlarge effect */
+}
+
+/* Style for the player info, current score, and high score */
+nav span {
+    font-size: 14px;             /* Adjust font size */
+    margin-right: 15px;
+    font-weight: bold;
+}
+
+/* Styling for "Player," "Current Score," and "High Score" */
+nav span#player-info,
+nav span#current-score,
+nav span#high-score {
+    padding: 10px 15px;          /* Add padding for consistent appearance */
+    
+    border-radius: 5px;          /* Rounded corners */
+    color: black;                /* Text Color */
+    margin: 0 5px;               /* Spacing */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+
+/* Tab Buttons */
+#tabs {
+    display: flex;             /* Arrange buttons in a horizontal row */
+    justify-content: center;   /* Center the buttons horizontally */
+    align-items: center;       /* Center the buttons vertically */
+    gap: 10px;                 /* Add spacing between buttons */
+    margin-bottom: 20px;       /* Add space below the tabs */
+}
+
+.tab-button {
+    padding: 10px 20px;        /* Adjust padding for a larger click area */
+    cursor: pointer;           /* Change cursor to pointer on hover */
+    background-color: #005c42; /* Button background color */
+    color: white;              /* Button text color */
+    border: none;
+    border-radius: 4px;        /* Slightly round button edges */
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s; /* Smooth hover effect */
+}
+
+.tab-button.active {
+    background-color: #007bff; /* Highlight the active tab */
+}
+
+.tab-button:hover {
+    background-color: #006f39; /* Slightly darker background on hover */
+    transform: scale(1.05);    /* Subtle enlarge effect on hover */
+}
+
+/* Tab Content */
+#tab-content {
+    text-align: left;
+}
+
+.tab {
+    display: none; /* Hide tabs by default */
+}
+
+.tab.active {
+    display: block; /* Show the active tab */
+}
+
+/* Cards Container */
+#cards-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#cards {
+    display: grid;
+    grid-template-columns: repeat(8, 80px); /* Ensure 8 cards per row */
+    grid-gap: 10px; /* Add spacing between cards */
+    justify-content: center; /* Center-align cards */
+}
+
+#cards img {
+    width: 80px;
+    height: 100px;
+    cursor: pointer;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    transition: transform 0.2s; /* Smooth hover effect */
+}
+
+#cards img:hover {
+    transform: scale(1.1); /* Enlarge card slightly on hover */
+}
+
+/* Form Styles */
+form {
+    margin: 0 auto;
+    text-align: left;
+    max-width: 300px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Scoreboard Table */
+#scoreboard-table {
+    width: 100%; /* Make the table take up the full width of the container */
+    border-collapse: collapse; /* Remove gaps between table cells */
+    margin-top: 1em; /* Add spacing from the title */
+    font-family: Arial, sans-serif; /* Use a clean, readable font */
+    background-color: #f9f9f9; /* Light background for the table */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+}
+
+#scoreboard-table th, #scoreboard-table td {
+    border: 1px solid #ddd; /* Light border for separation */
+    padding: 12px; /* Add padding for better spacing */
+    text-align: left; /* Align text to the left */
+}
+
+#scoreboard-table th {
+    background-color: #DCDCDC; /* Add a green background for the header */
+    color: black; /* Make text in the header white */
+    font-weight: bold; /* Emphasize header text */
+    text-transform: uppercase; /* Use uppercase for headers */
+}
+
+#scoreboard-table tr:nth-child(even) {
+    background-color: #f2f2f2; /* Add a light gray background for alternate rows */
+}
+
+#scoreboard-table tr:hover {
+    background-color: #ddd; /* Highlight the row on hover */
+}
+
+#scoreboard-table td {
+    color: #333; /* Darker text color for readability */
+}
+
+#scoreboard-table caption {
+    caption-side: top; /* Place the caption above the table */
+    font-size: 1.5em; /* Make the caption larger */
+    font-weight: bold; /* Emphasize the caption */
+    margin-bottom: 0.5em; /* Add spacing below the caption */
+    color: #333; /* Use a matching text color */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    #tabs {
+        flex-direction: column; /* Stack tab buttons vertically on small screens */
+    }
+}
