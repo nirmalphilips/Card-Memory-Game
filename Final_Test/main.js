@@ -16,18 +16,27 @@ const backImage = "images/back.png";
 const blankImage = "images/blank.png";
 let tries = 0;
 let currentScore = 0;
+let isProcessing = false; // Add this variable globally
+
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
     setupTabs();
     loadSettings();
     startGame();
 
-    // Add listener for the "New Game" button
     document.getElementById("new_game").addEventListener("click", () => {
-        // Clear the player name in localStorage and update the player tab
-        localStorage.removeItem("player-name");
-        document.getElementById("player-name").textContent = "Not Provided"; // Reset to default
-        startGame(); // Restart the game
+        // Clear the player name and reset to default
+        localStorage.setItem("player_name", "Not Provided");
+        document.getElementById("player-name").textContent = "Not Provided";
+        startGame();
     });
 });
 
@@ -45,25 +54,31 @@ function setupTabs() {
 }
 
 function loadSettings() {
-    const playerName = localStorage.getItem("playe-name") || "Not Provided"; // Default to "Not Provided"
-    const numCards = localStorage.getItem("num_cards") || 8;
-
-    // Update the player name display
+    // Retrieve player name from localStorage or set to default if not found
+    let playerName = localStorage.getItem("player_name") || "Not Provided";
     document.getElementById("player-name").textContent = playerName;
-    document.getElementById("high-score-value").textContent = "0"; // Reset high score display
 
-    // Handle the settings form submission
+    // Retrieve scores from localStorage or use an empty array
+    const scores = JSON.parse(localStorage.getItem("scores")) || [];
+
+    // Fetch player's high score or default to 0
+    const playerScore = scores.find(score => score.player === playerName)?.score || 0;
+    document.getElementById("high-score-value").textContent = `${playerScore}`;
+
+    // Add event listener for settings form submission
     document.getElementById("settings-form").addEventListener("submit", event => {
         event.preventDefault();
 
         // Save the new player name and number of cards
-        const playerInput = document.getElementById("player-input").value;
+        const playerInput = document.getElementById("player-input").value.trim();
         const numCards = document.getElementById("num-cards").value;
-        localStorage.setItem("player_name", playerInput);
-        localStorage.setItem("num_cards", numCards);
 
-        // Update the player name display immediately
-        document.getElementById("player-name").textContent = playerInput;
+        if (playerInput) {
+            localStorage.setItem("player_name", playerInput);
+            document.getElementById("player-name").textContent = playerInput;
+        }
+
+        localStorage.setItem("num_cards", numCards);
 
         alert("Settings saved!");
 
@@ -76,15 +91,17 @@ function loadSettings() {
 }
 
 
-
 function startGame() {
     tries = 0; // Reset tries
     currentScore = 0; // Reset current score
     document.getElementById("current-score-value").textContent = "0"; // Reset current score display
 
+    const playerName = localStorage.getItem("player_name") || "Not Provided";
+    const scores = JSON.parse(localStorage.getItem("scores")) || [];
+    const playerHighScore = scores.find(score => score.player === playerName)?.score || 0;
 
-    // Clear the player name input field in the settings form
-    document.getElementById("player-input").value = "";
+    // Update high score display for the current player
+    document.getElementById("high-score-value").textContent = playerHighScore;
 
     const numCards = parseInt(localStorage.getItem("num_cards")) || 8;
     const selectedCards = cardImages.slice(0, numCards / 2);
@@ -105,9 +122,6 @@ function startGame() {
 
 
 
-
-let isProcessing = false; // Add this variable globally
-
 function handleCardClick(event) {
     if (isProcessing) return;  // Prevent clicks while processing a match
 
@@ -119,7 +133,7 @@ function handleCardClick(event) {
 
     const flippedCards = Array.from(document.querySelectorAll(".flipped"));
     if (flippedCards.length === 2) {
-        tries++;  // Increment tries on each flip
+        tries++;  // Increment tries
         isProcessing = true;
 
         setTimeout(() => {
@@ -127,40 +141,29 @@ function handleCardClick(event) {
 
             // Check for a match
             if (card1.dataset.cardSrc === card2.dataset.cardSrc) {
-                card1.src = blankImage;  // If matched, turn the cards blank
+                card1.src = blankImage;
                 card2.src = blankImage;
             } else {
-                card1.src = backImage;   // If not matched, flip the cards back
+                card1.src = backImage;
                 card2.src = backImage;
-                // Apply penalty for incorrect tries
-                updateCurrentScore();   // Update score after wrong attempt
             }
 
-            card1.classList.remove("flipped");  // Reset flipped state
+            card1.classList.remove("flipped");
             card2.classList.remove("flipped");
+
+            const matchedPairs = Array.from(document.querySelectorAll("#cards img"))
+                .filter(card => card.src.includes(blankImage)).length / 2;
+
+            // Update the score based on current matched pairs and tries
+            updateCurrentScore(matchedPairs);
 
             isProcessing = false;
 
-            // Calculate total pairs matched and update current score
-            const totalPairs = Array.from(document.querySelectorAll("#cards img"))
-                .filter(card => card.src.includes(blankImage)).length / 2;
-
-            updateCurrentScore(totalPairs);  // Update and display current score
-
-            checkGameOver();  // Check if the game is over
+            checkGameOver(); // Check if the game is over
         }, 1000);
     }
 }
 
-
-
-
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-}
 
 function checkGameOver() {
     const allCards = Array.from(document.querySelectorAll("#cards img"));
@@ -175,8 +178,55 @@ function checkGameOver() {
 }
 
 
+function displayScores() {
+    const scores = JSON.parse(localStorage.getItem("scores")) || [];
+    const scoreboardTable = document.getElementById("scoreboard-table").getElementsByTagName('tbody')[0];
+    scoreboardTable.innerHTML = ""; // Clear previous rows
+
+    scores.forEach(score => {
+        const row = scoreboardTable.insertRow();
+        const playerCell = row.insertCell(0);
+        const scoreCell = row.insertCell(1);
+        const dateCell = row.insertCell(2);
+        const difficultyCell = row.insertCell(3); 
+
+        playerCell.textContent = score.player;
+        scoreCell.textContent = score.score;
+        dateCell.textContent = score.date;
+        difficultyCell.textContent = score.difficulty; // Show correct difficulty level
+    });
+}
+
+function storeScore(score) {
+    const playerName = localStorage.getItem("player_name") || "Player";
+    const numCards = parseInt(localStorage.getItem("num_cards")) || 8; // Difficulty level
+    const currentDate = new Date().toLocaleDateString();
+
+    // Fetch existing scores
+    const scores = JSON.parse(localStorage.getItem("scores")) || [];
+
+    // Append the new score instead of replacing it
+    scores.push({
+    player: playerName,
+    score: score,
+    date: currentDate,
+    difficulty: `${numCards} cards`
+    });
+
+    // Save back to localStorage
+    localStorage.setItem("scores", JSON.stringify(scores));
+
+    // Refresh the scoreboard display
+    displayScores();
+
+    // Update high score display for the current player
+    const updatedScore = scores.find(entry => entry.player === playerName)?.score || 0;
+    document.getElementById("high-score-value").textContent = updatedScore;
+}
+
+
 function calculateScore(totalPairs, tries) {
-    const pointsPerMatch = 10;  // Award 10 points per correct match
+    const pointsPerMatch = 20;  // Award 10 points per correct match
     const penaltyPerTry = 2;    // Deduct 2 points for each incorrect attempt
 
     // Calculate score from correct matches
@@ -189,76 +239,18 @@ function calculateScore(totalPairs, tries) {
     return Math.max(matchesScore - penalty, 0);  // Ensure score is non-negative
 }
 
-function displayScores() {
-    const scores = JSON.parse(localStorage.getItem("scores")) || [];
-    const scoreboardTable = document.getElementById("scoreboard-table").getElementsByTagName('tbody')[0];
-    scoreboardTable.innerHTML = ""; // Clear previous rows
-
-    scores.forEach(score => {
-        const row = scoreboardTable.insertRow();
-        const playerCell = row.insertCell(0);
-        const scoreCell = row.insertCell(1);
-        const dateCell = row.insertCell(2);
-        const difficultyCell = row.insertCell(3); // New column for difficulty
-
-        playerCell.textContent = score.player;
-        scoreCell.textContent = score.score;
-        dateCell.textContent = score.date;
-        difficultyCell.textContent = score.difficulty; // Add difficulty level
-    });
-}
-
-function storeScore(score) {
-    const playerName = localStorage.getItem("player_name") || "Player";
-    const numCards = parseInt(localStorage.getItem("num_cards")) || 8; // Difficulty level
-    const currentDate = new Date().toLocaleDateString();
-
-    const scores = JSON.parse(localStorage.getItem("scores")) || [];
-    scores.push({ player: playerName, score, date: currentDate, difficulty: `${numCards} cards` });
-    localStorage.setItem("scores", JSON.stringify(scores));
-    
-     // Update High Score
-     const highestScore = scores.reduce((max, entry) => Math.max(max, entry.score), 0);
-     document.getElementById("high-score-value").textContent = `${highestScore}`; // Display high score
-     
-    displayScores();
-}
-
 
 function updateCurrentScore(totalPairs) {
-    const pointsPerMatch = 10; // Points for each correct match
-    const penaltyPerTry = 2;   // Points deducted for each incorrect attempt
+    const pointsPerMatch = 20; // Points for each correct match
+    const penaltyPerTry = 2;   // Points deducted for incorrect tries
 
-    // Calculate score from correct matches
+    // Calculate the score
     const matchesScore = totalPairs * pointsPerMatch;
+    const penalty = Math.max(tries - totalPairs, 0) * penaltyPerTry;
 
-    // Calculate penalty based on incorrect tries
-    const penalty = (tries - totalPairs) * penaltyPerTry;
-
-    // Calculate and update current score
-    currentScore = Math.max(matchesScore - penalty, 0);  // Ensure score is not negative
-    document.getElementById("current-score-value").textContent = currentScore; // Display current score
+    currentScore = Math.max(matchesScore - penalty, 0); // Ensure score is non-negative
+    document.getElementById("current-score-value").textContent = currentScore; // Update display
 }
-
-
-function startGame() {
-    tries = 0; // Reset tries
-    const numCards = parseInt(localStorage.getItem("num_cards")) || 8;
-    const selectedCards = cardImages.slice(0, numCards / 2);
-    const gameCards = [...selectedCards, ...selectedCards];
-    shuffleArray(gameCards);
-
-    const cardsContainer = document.getElementById("cards");
-    cardsContainer.innerHTML = "";
-    gameCards.forEach(cardSrc => {
-        const card = document.createElement("img");
-        card.src = backImage;
-        card.dataset.cardSrc = cardSrc;
-        card.addEventListener("click", handleCardClick);
-        cardsContainer.appendChild(card);
-    });
-}
-
 
 if (card1.dataset.cardSrc === card2.dataset.cardSrc) {
     card1.src = blankImage;
