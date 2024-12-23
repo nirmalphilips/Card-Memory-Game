@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> <!-- Specifies the character encoding (UTF-8 supports special characters) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Makes the page responsive for all screen sizes -->
+    <title>Play Memory Game</title> <!-- Sets the title displayed in the browser tab -->
+    <link rel="stylesheet" href="memory.css"> <!-- Link to CSS file -->
+</head>
+<body>
+    <!-- Main container for the game -->
+    <div id="game-container">
+        <h1>Cards Memory Game</h1>
+        <nav>
+            <a href="index.html" id="new_game">New Game</a>
+            <span id="player-info">Player: <span id="player-name">Name</span></span>
+            <span id="current-score">Current score: <span id="current-score-value">0</span></span>
+            <span id="high-score">High score: <span id="high-score-value">0</span></span>
+        </nav>
+
+         <!-- Tab navigation buttons -->
+        <div id="tabs">
+            <!-- Buttons to switch between different sections -->
+            <button class="tab-button" data-tab="play">Play Game</button>
+            <button class="tab-button" data-tab="rules">View Rules</button>
+            <button class="tab-button" data-tab="settings">Game Settings</button>
+            <button class="tab-button" data-tab="scoreboard">Score Board</button>
+        </div>
+
+         <!-- Container for tab-specific content -->
+        <div id="tab-content">
+            <div id="play-tab" class="tab active">
+                <div id="cards-container">
+                    <!-- Game cards will be dynamically added here -->
+                    <div id="cards"></div>
+                </div>
+            </div>
+
+           <!-- Rules tab: Displays instructions -->
+    <div id="rules-tab" class="tab">
+    <h2>HOW TO PLAY</h2>
+
+    <h3>Set Up Your Game:</h3>
+    <ul>
+        <li>Navigate to the <strong>Game Settings</strong> tab.</li>
+        <li>Enter your <strong>player name</strong> and select the <strong>number of cards</strong> you want to play with.</li>
+        <li>Click <strong>Save Settings</strong> to begin the game.</li>
+    </ul>
+
+    <h3>Game Objective:</h3>
+    <p>Match all the cards on the board by finding their pairs. The fewer attempts you use, the higher your score will be!</p>
+
+    <h3>Game Rules:</h3>
+    <ul>
+        <li>The cards are placed face down. Each card has an identical match hidden on the board.</li>
+        <li>On each turn:
+            <ul>
+                <li>Select <strong>two cards</strong> to flip them face up.</li>
+                <li>If the cards match, they will disappear from the board.</li>
+                <li>If the cards don’t match, they will flip back face down after a brief delay.</li>
+            </ul>
+        </li>
+        <li><strong>Scoring System:</strong>
+            <ul>
+                <li><strong>+20 Points</strong> for each correct match.</li>
+                <li><strong>-2 Points</strong> for each incorrect match.</li>
+            </ul>
+        </li>
+        <li>Your <strong>live score</strong> will update as you play.</li>
+    </ul>
+
+    <h3>Scoreboard & High Scores:</h3>
+    <ul>
+        <li>Track your <strong>live score</strong> and see your <strong>highest score</strong> displayed during the game.</li>
+        <li>At the end of the game, view the <strong>scoreboard</strong> to evaluate your performance and compare your best scores.</li>
+    </ul>
+
+    <h3>Start Over Anytime:</h3>
+    <p>Click the <strong>New Game</strong> button to reshuffle the cards and start fresh with new challenges.</p>
+
+    <h3>Tips for Success:</h3>
+    <ul>
+        <li>Take your time to memorize card positions before flipping.</li>
+        <li>Plan your moves to maximize correct matches and minimize mistakes.</li>
+        <li>Aim for a high score to beat your personal best!</li>
+    </ul>
+    </div>
+
+
+            <!-- Settings tab: Allows game customization -->
+            <div id="settings-tab" class="tab">
+                <h2>Settings</h2>
+                <form id="settings-form">
+                    <label for="player-input">Player name:</label>
+                    <input type="text" id="player-input" placeholder="Enter your name" required>
+                    <br>
+
+                    <!-- Dropdown for selecting the number of cards -->
+                    <label for="num-cards">Number of cards:</label>
+                    <select id="num-cards">
+                        <option value="8">8 cards</option>
+                        <option value="16">16 cards</option>
+                        <option value="24">24 cards</option>
+                        <option value="32">32 cards</option>
+                        <option value="48">48 cards</option>
+                    </select>
+                    <br>
+                    <button type="submit">Save Settings</button>
+                </form>
+            </div>
+
+             <!-- Scoreboard tab: Displays game scores -->
+            <div id="scoreboard-tab" class="tab">
+                <table id="scoreboard-table">
+                    <caption>Scoreboard</caption>
+                    <thead>
+                        <tr>
+                            <th>Player Name</th>
+                            <th>Score</th>
+                            <th>Date</th>
+                            <th>Difficulty Level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be dynamically added here -->
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Link to the JavaScript file -->
+    <script src="main.js"></script>
+</body>
+</html>
