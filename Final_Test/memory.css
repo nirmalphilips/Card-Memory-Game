@@ -1,22 +1,25 @@
+
 /* General Styles */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+    font-family: Arial, sans-serif; /* default font style */
+    margin: 0; /* Removes default margin */
+    padding: 0; /* Removes default padding */
     background-color: black;
     text-align: center;
 }
 
+/* Game container Styles */
 #game-container {
     width: 90%;
     max-width: 800px;
     margin: 20px auto;
     background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px; /* Adds spacing inside the container */
+    border-radius: 8px; /* Rounds the corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  /* Adds a subtle shadow for depth */
 }
 
+/* Game title Style */
 h1 {
     margin-bottom: 20px;
     font-size: 2em;
@@ -25,12 +28,12 @@ h1 {
     color: #333;
 }
 
-/* Layout for the nav section */
+/* Layout for the navigation section */
 nav {
     display: flex;               /* Arrange items in a row */
     justify-content: space-between; /* Distribute space evenly */
-    align-items: center;         /* Align items vertically in the center */
-    background-color: white;   /* Add a distinct background color */
+    align-items: center;       
+    background-color: white;   
     padding: 10px 20px;          /* Add padding for spacing */
     border-radius: 8px;          /* Round the edges of the nav bar */
     color: white;                /* Make text white */
@@ -52,6 +55,7 @@ nav a#new_game {
     transition: background-color 0.3s ease, transform 0.2s; /* Smooth transitions */
 }
 
+/* Hover styles */
 nav a#new_game:hover {
     background-color: #0056b3;   /* Darker blue on hover */
     transform: scale(1.05);      /* Slight enlarge effect */
@@ -77,13 +81,13 @@ nav span#high-score {
 }
 
 
-/* Tab Buttons */
+/* Tab Buttons styling */
 #tabs {
     display: flex;             /* Arrange buttons in a horizontal row */
     justify-content: center;   /* Center the buttons horizontally */
-    align-items: center;       /* Center the buttons vertically */
-    gap: 10px;                 /* Add spacing between buttons */
-    margin-bottom: 20px;       /* Add space below the tabs */
+    align-items: center;      
+    gap: 10px;                
+    margin-bottom: 20px;      
 }
 
 .tab-button {
@@ -148,51 +152,110 @@ nav span#high-score {
 
 /* Form Styles */
 form {
-    margin: 0 auto;
+    margin: 0 auto; /* Centers the form */
     text-align: left;
     max-width: 300px;
 }
 
 label {
-    display: block;
-    margin-bottom: 5px;
+    display: block; /* Ensures labels take up a full row */
+    margin-bottom: 5px; 
     font-weight: bold;
 }
 
 input, select, button {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    width: 100%;   /* Makes elements take full width */
+    padding: 10px; /* Adds padding for comfort */
+    margin-bottom: 15px; 
+    border: 1px solid #ccc; /* Adds a light border */
+    border-radius: 4px; 
     font-size: 14px;
 }
 
 button {
-    background-color: #007bff;
+    background-color: #007bff;  /* Sets button background color */
     color: white;
     border: none;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* Changes button background color on hover */
 }
+
+/* Rules Tab Styling */
+#rules-tab {
+    text-align: left; 
+    background-color: #f9f9f9; 
+    padding: 20px; /* Add padding for spacing */
+    border-radius: 8px; /* Rounded corners for a modern look */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    margin-bottom: 20px; /* Add spacing below the section */
+}
+
+#rules-tab h2 {
+    font-size: 1.8em; /* Increase size for the main heading */
+    color: #333; /* Dark color for emphasis */
+    margin-bottom: 10px; /* Add spacing below the heading */
+}
+
+#rules-tab h3 {
+    font-size: 1.4em; /* Slightly smaller than the main heading */
+    color: #333; 
+    margin-bottom: 8px; /* Add spacing below the subheading */
+}
+
+#rules-tab ul {
+    list-style-type: disc; /* Use disc bullets for lists */
+    padding-left: 20px; /* Indent the list for better readability */
+    margin-bottom: 15px; /* Add spacing below the list */
+}
+
+#rules-tab ul li {
+    margin-bottom: 5px; /* Add spacing between list items */
+    font-size: 1em; /* Maintain readable font size */
+    color: #333; 
+}
+
+#rules-tab p {
+    margin-bottom: 15px; /* Add spacing below paragraphs */
+    font-size: 1em; /* Keep font size consistent */
+    color: #555; 
+}
+
+#rules-tab strong {
+    color: #005c42; /* Highlight important text in green */
+}
+
+/* Tips Section Styling */
+#rules-tab ul li ul {
+    list-style-type: circle; /* Use circle bullets for nested lists */
+    margin-left: 15px; 
+}
+
+#rules-tab ul li ul li {
+    font-size: 0.9em; /* Slightly smaller font for nested items */
+    color: #555; /* Softer text color for nested items */
+}
+
+
+
+
 
 /* Scoreboard Table */
 #scoreboard-table {
     width: 100%; /* Make the table take up the full width of the container */
     border-collapse: collapse; /* Remove gaps between table cells */
     margin-top: 1em; /* Add spacing from the title */
-    font-family: Arial, sans-serif; /* Use a clean, readable font */
-    background-color: #f9f9f9; /* Light background for the table */
+    font-family: Arial, sans-serif; 
+    background-color: #f9f9f9; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
 }
 
 #scoreboard-table th, #scoreboard-table td {
     border: 1px solid #ddd; /* Light border for separation */
     padding: 12px; /* Add padding for better spacing */
-    text-align: left; /* Align text to the left */
+    text-align: left; 
 }
 
 #scoreboard-table th {

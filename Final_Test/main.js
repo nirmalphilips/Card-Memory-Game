@@ -1,5 +1,7 @@
-"use strict";
+"use strict"; // Enables strict mode, which catches common coding errors and improves performance
 
+
+// Array containing cards image path.
 const cardImages = [
     "images/card_1.png", "images/card_2.png", "images/card_3.png",
     "images/card_4.png", "images/card_5.png", "images/card_6.png",
@@ -11,40 +13,44 @@ const cardImages = [
     "images/card_22.png", "images/card_23.png", "images/card_24.png"
 ];
 
+// Paths to the back and blank images for the cards
+const backImage = "images/back.png";       
+const blankImage = "images/blank.png";   
 
-const backImage = "images/back.png";
-const blankImage = "images/blank.png";
-let tries = 0;
-let currentScore = 0;
-let isProcessing = false; // Add this variable globally
+// Variables for tracking the game state.
+let tries = 0;                              // Number of attempts made
+let currentScore = 0;                       // Player's current score
+let isProcessing = false;                   // prevent multiple card clicks 
 
 
+// Function to shuffle the order,position of cards 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        const j = Math.floor(Math.random() * (i + 1));  // Random index.
+        [array[i], array[j]] = [array[j], array[i]];    // Swap elements.
     }
 }
 
-
+// To setup and start the game when the page finishes loading
 document.addEventListener("DOMContentLoaded", () => {
-    setupTabs();
-    loadSettings();
-    startGame();
+    setupTabs();    // Configure tab switching functionality.
+    loadSettings(); // Load user settings.
+    startGame();    // Initialize the game.
 
+// Event listener for the "New Game" button.
     document.getElementById("new_game").addEventListener("click", () => {
-        // Clear the player name and reset to default
         localStorage.setItem("player_name", "Not Provided");
         document.getElementById("player-name").textContent = "Not Provided";
-        startGame();
+        startGame(); // Restart the game.
     });
 });
 
-
+// Function that handles tab-switching in the interface.
 function setupTabs() {
     const tabs = document.querySelectorAll(".tab-button");
     tabs.forEach(tab => {
         tab.addEventListener("click", () => {
+            // Deactivate all tabs and activate the selected one.
             document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
             document.querySelector(`#${tab.dataset.tab}-tab`).classList.add("active");
             tabs.forEach(b => b.classList.remove("active"));
@@ -53,8 +59,10 @@ function setupTabs() {
     });
 }
 
+
+// Function that loads user settings from localStorage or set defaults.
 function loadSettings() {
-    // Retrieve player name from localStorage or set to default if not found
+    // Retrieve player name from localStorage or set to Not Provided if not found
     let playerName = localStorage.getItem("player_name") || "Not Provided";
     document.getElementById("player-name").textContent = playerName;
 
@@ -67,30 +75,29 @@ function loadSettings() {
 
     // Add event listener for settings form submission
     document.getElementById("settings-form").addEventListener("submit", event => {
-        event.preventDefault();
+        event.preventDefault(); // Prevent page refresh.
 
         // Save the new player name and number of cards
         const playerInput = document.getElementById("player-input").value.trim();
         const numCards = document.getElementById("num-cards").value;
 
         if (playerInput) {
-            localStorage.setItem("player_name", playerInput);
+            localStorage.setItem("player_name", playerInput); // Save player name
             document.getElementById("player-name").textContent = playerInput;
         }
 
-        localStorage.setItem("num_cards", numCards);
+        localStorage.setItem("num_cards", numCards); // Save number of cards.
 
         alert("Settings saved!");
 
-        // Redirect to Play Game tab
-        document.querySelector("[data-tab='play']").click();
+        document.querySelector("[data-tab='play']").click(); // Switch to Play tab.
 
-        // Restart the game with new settings
-        startGame();
+        startGame(); // Restart the game with updated settings.
     });
 }
 
 
+// Function that starts the game by resetting variables and displaying the cards.
 function startGame() {
     tries = 0; // Reset tries
     currentScore = 0; // Reset current score
@@ -104,24 +111,23 @@ function startGame() {
     document.getElementById("high-score-value").textContent = playerHighScore;
 
     const numCards = parseInt(localStorage.getItem("num_cards")) || 8;
-    const selectedCards = cardImages.slice(0, numCards / 2);
-    const gameCards = [...selectedCards, ...selectedCards];
-    shuffleArray(gameCards);
+    const selectedCards = cardImages.slice(0, numCards / 2); // Choose pairs.
+    const gameCards = [...selectedCards, ...selectedCards];  // Duplicate pairs.
+    shuffleArray(gameCards); // Shuffle the cards.
 
     const cardsContainer = document.getElementById("cards");
-    cardsContainer.innerHTML = "";
+    cardsContainer.innerHTML = ""; // Clear previous cards.
     gameCards.forEach(cardSrc => {
         const card = document.createElement("img");
-        card.src = backImage;
-        card.dataset.cardSrc = cardSrc;
-        card.addEventListener("click", handleCardClick);
+        card.src = backImage;                                // Initially show the back of the card.
+        card.dataset.cardSrc = cardSrc;                     // Store the card's front image.
+        card.addEventListener("click", handleCardClick);    // Add click handler.
         cardsContainer.appendChild(card);
     });
 }
 
 
-
-
+// Function that handles card click events.
 function handleCardClick(event) {
     if (isProcessing) return;  // Prevent clicks while processing a match
 
@@ -165,6 +171,7 @@ function handleCardClick(event) {
 }
 
 
+// Function that checks if all pairs have been matched.
 function checkGameOver() {
     const allCards = Array.from(document.querySelectorAll("#cards img"));
     const matchedCards = allCards.filter(card => card.src.includes(blankImage));
@@ -178,6 +185,7 @@ function checkGameOver() {
 }
 
 
+// Function that displays the scoreboard with saved scores
 function displayScores() {
     const scores = JSON.parse(localStorage.getItem("scores")) || [];
     const scoreboardTable = document.getElementById("scoreboard-table").getElementsByTagName('tbody')[0];
@@ -190,13 +198,15 @@ function displayScores() {
         const dateCell = row.insertCell(2);
         const difficultyCell = row.insertCell(3); 
 
-        playerCell.textContent = score.player;
-        scoreCell.textContent = score.score;
-        dateCell.textContent = score.date;
-        difficultyCell.textContent = score.difficulty; // Show correct difficulty level
+        playerCell.textContent = score.player;          //Dsiplay player name
+        scoreCell.textContent = score.score;            //Displays score
+        dateCell.textContent = score.date;              // Displays date
+        difficultyCell.textContent = score.difficulty; // Add difficulty level (Number of cards)
     });
 }
 
+
+// Function that saves the player's score to localStorage.
 function storeScore(score) {
     const playerName = localStorage.getItem("player_name") || "Player";
     const numCards = parseInt(localStorage.getItem("num_cards")) || 8; // Difficulty level
@@ -205,13 +215,25 @@ function storeScore(score) {
     // Fetch existing scores
     const scores = JSON.parse(localStorage.getItem("scores")) || [];
 
-    // Append the new score instead of replacing it
-    scores.push({
-    player: playerName,
-    score: score,
-    date: currentDate,
-    difficulty: `${numCards} cards`
-    });
+    // Find the player's existing score
+    const playerIndex = scores.findIndex(entry => entry.player === playerName);
+
+    if (playerIndex !== -1) {
+        // Player exists, update score if the new one is higher
+        if (score > scores[playerIndex].score) {
+            scores[playerIndex].score = score;
+            scores[playerIndex].date = currentDate; // Update date
+            scores[playerIndex].difficulty = `${numCards} cards`; // Update difficulty
+        }
+    } else {
+        // New player, add to the scores
+        scores.push({
+            player: playerName,
+            score: score,
+            date: currentDate,
+            difficulty: `${numCards} cards`
+        });
+    }
 
     // Save back to localStorage
     localStorage.setItem("scores", JSON.stringify(scores));
@@ -220,11 +242,12 @@ function storeScore(score) {
     displayScores();
 
     // Update high score display for the current player
-    const updatedScore = scores.find(entry => entry.player === playerName)?.score || 0;
-    document.getElementById("high-score-value").textContent = updatedScore;
+    document.getElementById("high-score-value").textContent = scores.find(entry => entry.player === playerName).score;
 }
 
 
+
+// Function that Calculates the player's score based on matches and tries.
 function calculateScore(totalPairs, tries) {
     const pointsPerMatch = 20;  // Award 10 points per correct match
     const penaltyPerTry = 2;    // Deduct 2 points for each incorrect attempt
@@ -239,7 +262,7 @@ function calculateScore(totalPairs, tries) {
     return Math.max(matchesScore - penalty, 0);  // Ensure score is non-negative
 }
 
-
+// Function that  Updates the live score on the game interface.
 function updateCurrentScore(totalPairs) {
     const pointsPerMatch = 20; // Points for each correct match
     const penaltyPerTry = 2;   // Points deducted for incorrect tries
@@ -250,16 +273,6 @@ function updateCurrentScore(totalPairs) {
 
     currentScore = Math.max(matchesScore - penalty, 0); // Ensure score is non-negative
     document.getElementById("current-score-value").textContent = currentScore; // Update display
-}
-
-if (card1.dataset.cardSrc === card2.dataset.cardSrc) {
-    card1.src = blankImage;
-    card2.src = blankImage;
-
-    const totalPairs = Array.from(document.querySelectorAll("#cards img"))
-        .filter(card => card.src.includes(blankImage)).length / 2;
-
-    updateCurrentScore(totalPairs); // Update and display current score
 }
 
 
